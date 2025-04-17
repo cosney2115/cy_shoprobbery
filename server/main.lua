@@ -2,6 +2,9 @@ local stealer = {}
 local robberedShops = {}
 local configData = Config.Robbery
 
+--- Checking if the player is in the area of the cash box or even its exist
+--- @param playerCoords vector3
+--- @param data table
 local function isDataValid(playerCoords, data)
     for i = 1, #configData.CashBox do
         if #(configData.CashBox[i].coords - data.coords) > 15.0 and #(playerCoords - configData.CashBox[i].coords) > 15.0 then
