@@ -46,9 +46,9 @@ Config.Robbery = {
         },
         {
             name = "shop8",
-            coords = vec3(-3041.1, 585.05, 8.0),
-            size = vec3(0.5, 0.5, 0.5),
-            rotation = 22.5,
+            coords = vec3(-3039.1, 585.05, 8.0),
+            size = vec3(0.45, 0.45, 0.55),
+            rotation = 21.75,
         },
         {
             name = "shop9",

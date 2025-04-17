@@ -13,8 +13,15 @@ for i = 1, #configData.CashBox do
                 name = "shop_" .. i,
                 label = "Rob the cash box",
                 icon = "fas fa-money-bill-wave",
+                canInteract = function()
+                    if cache.vehicle then
+                        return false
+                    end
+
+                    return true
+                end,
                 onSelect = function(data)
-                    --- u can use ure minigame
+                    -- u can use ure minigame
 
                     local success = lib.skillCheck({ 'easy', 'easy', { areaSize = 60, speedMultiplier = 2 }, 'hard' },
                         { 'w', 'a', 's', 'd' })
@@ -39,6 +46,14 @@ end
 RegisterNetEvent('cy_shoprobbery:client:startRobbery', function(data)
     assert(data, 'Data not found')
 
+    -- Maybe i'll find better way to do this for now i'll just swap the model
+    local cashBox = GetClosestObjectOfType(data.coords, 2.0, `prop_till_01`, false, false, false, false, false)
+    local propCoords = GetEntityCoords(cashBox)
+
+    if DoesEntityExist(cashBox) then
+        CreateModelSwap(propCoords, 0.5, `prop_till_01`, `prop_till_01_dam`, false)
+    end
+
     if lib.progressBar({
             duration = configData.Duration,
             label = 'Rob the cash box',
@@ -56,6 +71,9 @@ RegisterNetEvent('cy_shoprobbery:client:startRobbery', function(data)
         })
     then
         TriggerServerEvent("cy_shoprobbery:server:robberySuccess", data)
+
+        -- IDK if u want u can just delete this but i think its better to swap the model back
+        CreateModelSwap(propCoords, 0.5, `prop_till_01_dam`, `prop_till_01`, false)
         return
     end
 
