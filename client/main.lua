@@ -37,9 +37,7 @@ for i = 1, #configData.CashBox do
 end
 
 RegisterNetEvent('cy_shoprobbery:client:startRobbery', function(data)
-    if not data then
-        return
-    end
+    assert(data, 'Data not found')
 
     if lib.progressBar({
             duration = configData.Duration,

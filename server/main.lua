@@ -2,7 +2,7 @@ local stealer = {}
 local robberedShops = {}
 local configData = Config.Robbery
 
---- Checking if the player is in the area of the cash box or even its exist
+--- Validates data and ensures player proximity to the cash box
 --- @param playerCoords vector3
 --- @param data table
 local function isDataValid(playerCoords, data)
@@ -101,7 +101,6 @@ RegisterNetEvent('cy_shoprobbery:server:robberySuccess', function(data)
     assert(data, 'Data not found')
 
     assert(stealer[_source], 'Stealer not found')
-
 
     if data.name ~= stealer[_source].shop then
         configData.BanFunction(_source)

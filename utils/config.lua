@@ -106,9 +106,7 @@ Config.Robbery = {
         },
     },
     BanFunction = function(source)
-        if not source then
-            return
-        end
+        assert(source, 'Source not found')
 
         DropPlayer(source, "[CY_SHOPROBBERY] you are banned from this server")
     end,
