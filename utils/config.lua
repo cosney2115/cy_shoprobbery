@@ -110,7 +110,7 @@ Config.Robbery = {
             return
         end
 
-        DropPlayer(source, "[CY_SHOPROBBERY] you are banned from this server")
+        -- DropPlayer(source, "[CY_SHOPROBBERY] you are banned from this server")
     end,
     Duration = 2000,              -- Duration in ms
     MoneyAmount = { 1000, 5000 }, -- min, max

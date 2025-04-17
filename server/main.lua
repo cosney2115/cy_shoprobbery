@@ -2,17 +2,22 @@ local stealer = {}
 local robberedShops = {}
 local configData = Config.Robbery
 
+local function isDataValid(playerCoords, data)
+    for i = 1, #configData.CashBox do
+        if #(configData.CashBox[i].coords - data.coords) > 15.0 and #(playerCoords - configData.CashBox[i].coords) > 15.0 then
+            return true
+        end
+    end
+
+    return false
+end
+
 RegisterNetEvent('cy_shoprobbery:server:startRobbery', function(data)
     local _source = source
     local xPlayer = ESX.GetPlayerFromId(_source)
 
-    if not xPlayer then
-        return
-    end
-
-    if not data then
-        return
-    end
+    assert(xPlayer, 'xPlayer not found')
+    assert(data, 'Data not found')
 
     local player = GetPlayerPed(_source)
     local weapon = GetCurrentPedWeapon(player)
@@ -27,7 +32,14 @@ RegisterNetEvent('cy_shoprobbery:server:startRobbery', function(data)
         return
     end
 
-    if #(GetEntityCoords(player) - data.coords) > 10.0 then
+    local playerCoords = GetEntityCoords(player)
+
+    if not isDataValid(playerCoords, data) then
+        configData.BanFunction(_source)
+        return
+    end
+
+    if #(playerCoords - data.coords) > 10.0 then
         configData.BanFunction(_source)
         return
     end
@@ -83,13 +95,10 @@ end)
 RegisterNetEvent('cy_shoprobbery:server:robberySuccess', function(data)
     local _source = source
 
-    if not data then
-        return
-    end
+    assert(data, 'Data not found')
 
-    if not stealer[_source] then
-        return
-    end
+    assert(stealer[_source], 'Stealer not found')
+
 
     if data.name ~= stealer[_source].shop then
         configData.BanFunction(_source)
@@ -126,4 +135,12 @@ RegisterNetEvent('cy_shoprobbery:server:robberySuccess', function(data)
         description = 'You successfully robbed the cash register and stole ' .. cash .. '$',
         duration = 2500
     })
+end)
+
+AddEventHandler('playerDropped', function()
+    local _source = source
+
+    if stealer[_source] then
+        stealer[_source] = nil
+    end
 end)
